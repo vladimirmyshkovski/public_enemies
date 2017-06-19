@@ -6,11 +6,11 @@ volumes:
 
 services:
   postgres:
-    build: ./compose/docker-postgis
+    build: ./compose/postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
-    env_file: .env
+    env_file: .env.example
 
   django:
     build:
@@ -20,7 +20,7 @@ services:
       - postgres
       - redis
     command: /gunicorn.sh
-    env_file: .env
+    env_file: .env.example
 
   nginx:
     build: ./compose/nginx
@@ -29,7 +29,7 @@ services:
 
       - certbot
     environment:
-      - MY_DOMAIN_NAME=враги-народа.рф
+      - MY_DOMAIN_NAME='xn------dddfnxoenlfghchl4bitc.xn--90ais'
 
     ports:
       - "0.0.0.0:80:80"
@@ -60,7 +60,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/django/Dockerfile
-    env_file: .env
+    env_file: .env.example
     depends_on:
      - postgres
      - redis
@@ -70,7 +70,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/django/Dockerfile
-    env_file: .env
+    env_file: .env.example
     depends_on:
       - postgres
       - redis

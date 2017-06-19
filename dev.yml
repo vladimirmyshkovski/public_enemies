@@ -6,12 +6,12 @@ volumes:
 
 services:
   postgres:
-    build: ./compose/docker-postgis
+    build: ./compose/postgres
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
       - postgres_backup_dev:/backups
     environment:
-      - ALLOW_IP_RANGE=172.18.0.0/16
+      - POSTGRES_USER=docker-test
 
   django:
     build:
@@ -22,9 +22,8 @@ services:
       - postgres
       - mailhog
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=gis
+      - POSTGRES_USER=docker-test
+      - POSTGRES_PASSWORD=docker-test
       - USE_DOCKER=yes
     volumes:
       - .:/app

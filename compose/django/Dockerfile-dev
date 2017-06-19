@@ -1,8 +1,6 @@
 FROM python:3.5
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update -y
-RUN apt-get -y install binutils libproj-dev gdal-bin
 
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY ./requirements /requirements

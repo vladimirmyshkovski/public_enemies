@@ -2,8 +2,7 @@ FROM python:3.5
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update -y
-RUN apt-get -y install binutils libproj-dev gdal-bin
+
 
 RUN groupadd -r django \
     && useradd -r -g django django
