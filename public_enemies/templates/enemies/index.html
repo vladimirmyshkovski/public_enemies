@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+      <div class="container">
+        <div class="row">
+        {% for enemy in enemies %}
+          <div class="col-lg-3 col-xl-3" style="padding: 1em; margin: 1em;">
+            <a href="{% url 'detail' enemy.id %}"><img src="media/{{ enemy.avatar }}" style="width: 300px; height: 175px" alt="{{ enemy.first_name }} {{ enemy.last_name }}"></a>
+            <p class="card-text">{{ enemy.description | truncatechars:25 }}</p>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6" style="text-align: center;">
+
+                            <p class="lead" style="color: red;">
+                                {{ enemy.total_downvotes }}</p>
+                        </div>
+                        <div class="col-xs-6 col-md-6" style="text-align: center;">
+                            <p class="lead" style="color: green;">
+                                {{ enemy.total_upvotes }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6" style="text-align: center;">
+                            <form id="downvote" action="{% url 'downvote' enemy.id  %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" href="">Казнить</button>
+                            </form>
+                        </div>
+                        <div class="col-xs-6 col-md-6" style="text-align: center;">
+                            <form id="upvote" action="{% url 'upvote' enemy.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Помиловать</button>
+                            </form>                        
+                        </div>
+                    </div>
+          </div>
+        {% if forloop.counter|divisibleby:3 %}
+        </div>
+        <div class="row">
+        {% endif %}
+        {% endfor %}
+        </div>
+      </div>
+{% endblock content %}

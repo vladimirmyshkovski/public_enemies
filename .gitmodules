@@ -1,0 +1,6 @@
+[submodule "compose/docker-postgis"]
+	path = compose/docker-postgis
+	url = https://github.com/kartoza/docker-postgis.git
+[submodule "compose/docker-flower"]
+	path = compose/docker-flower
+	url = https://github.com/placr-systems/docker-flower

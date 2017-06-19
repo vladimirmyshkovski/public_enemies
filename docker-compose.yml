@@ -1,0 +1,78 @@
+version: '2'
+
+volumes:
+  postgres_data: {}
+  postgres_backup: {}
+
+services:
+  postgres:
+    build: ./compose/docker-postgis
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_backup:/backups
+    env_file: .env
+
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    depends_on:
+      - postgres
+      - redis
+    command: /gunicorn.sh
+    env_file: .env
+
+  nginx:
+    build: ./compose/nginx
+    depends_on:
+      - django
+
+      - certbot
+    environment:
+      - MY_DOMAIN_NAME=враги-народа.рф
+
+    ports:
+      - "0.0.0.0:80:80"
+
+      - "0.0.0.0:443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+
+  certbot:
+    image: quay.io/letsencrypt/letsencrypt
+    command: bash -c "sleep 6 && certbot certonly -n --standalone -d враги-народа.рф --test --agree-tos --email narnikgamarnikus@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges http-01"
+    entrypoint: ""
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+    ports:
+      - "80"
+      - "443"
+    environment:
+      - TERM=xterm
+
+
+  redis:
+    image: redis:3.0
+
+  celeryworker:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    env_file: .env
+    depends_on:
+     - postgres
+     - redis
+    command: celery -A public_enemies.taskapp worker -l INFO
+
+  celerybeat:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A public_enemies.taskapp beat -l INFO
+
