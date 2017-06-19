@@ -73,7 +73,7 @@ X_FRAME_OPTIONS = 'DENY'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['xn------dddfnxoenlfghchl4bitc.xn--90ais', 'sentry'])
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['xn------dddfnxoenlfghchl4bitc.xn--90ais'])
 # END SITE CONFIGURATION
 
 INSTALLED_APPS += ['gunicorn', ]
@@ -185,7 +185,7 @@ CACHES = {
 
 
 # Sentry Configuration
-SENTRY_DSN = env('DJANGO_SENTRY_DSN')
+SENTRY_DSN = env('DJANGO_SENTRY_DSN', default='https://56bb387ee6ef4e7bb513862157edac13:516039c011914079a7b3c4d36bd6fe2b@sentry.io/158504')
 SENTRY_CLIENT = env('DJANGO_SENTRY_CLIENT', default='raven.contrib.django.raven_compat.DjangoClient')
 LOGGING = {
     'version': 1,
