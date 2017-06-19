@@ -18,6 +18,7 @@ import logging
 
 
 from .base import *  # noqa
+import os
 
 # SECRET CONFIGURATION
 # ------------------------------------------------------------------------------
