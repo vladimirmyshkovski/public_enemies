@@ -41,7 +41,7 @@ services:
 
   certbot:
     image: quay.io/letsencrypt/letsencrypt
-    command: bash -c "sleep 6 && certbot certonly -n --standalone -d враги-народа.рф --test --agree-tos --email narnikgamarnikus@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges http-01"
+    command: bash -c "sleep 6 && certbot certonly -n --standalone -d xn------dddfnxoenlfghchl4bitc.xn--90ais --test --agree-tos --email narnikgamarnikus@gmail.com --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges http-01"
     entrypoint: ""
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
